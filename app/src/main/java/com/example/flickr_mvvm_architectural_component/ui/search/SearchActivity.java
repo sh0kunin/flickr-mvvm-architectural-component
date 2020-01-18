@@ -1,10 +1,12 @@
-package com.example.flickr_mvvm_architectural_component;
+package com.example.flickr_mvvm_architectural_component.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.flickr_mvvm_architectural_component.R;
+
+public class SearchActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
