@@ -16,6 +16,31 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            testCoverageEnabled = true
+        }
+    }
+}
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'androidx.arch.core'
+                && !details.requested.name.contains('core-runtime')) {
+            details.useVersion "2.0.1"
+        }
+    }
+}
+
+
+/*
+Cannot find a version of 'androidx.arch.core:core-common' that satisfies the version constraints
+    https://stackoverflow.com/questions/55336613/cannot-find-a-version-of-androidx-arch-corecore-common-that-satisfies-the-ver
+ */
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'androidx.arch.core'
+                && !details.requested.name.contains('core-runtime')) {
+            details.useVersion "2.0.1"
+        }
     }
 }
 
@@ -29,8 +54,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:${rootProject.ext.androidx_room_version}"
 
     testImplementation "junit:junit:${rootProject.ext.test_junit}"
-
+    androidTestImplementation "androidx.arch.core:core-testing:${rootProject.ext.androidx_core_testing}"
     androidTestImplementation "androidx.test.ext:junit:${rootProject.ext.androidx_test_junit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.androidx_test_espresso}"
-
 }
