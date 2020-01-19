@@ -1,4 +1,4 @@
-package com.example.flickr_mvvm_architectural_component.dao;
+package com.example.flickr_mvvm_architectural_component.db.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import android.content.Context;
 
 import com.example.flickr_mvvm_architectural_component.db.Database;
-import com.example.flickr_mvvm_architectural_component.db.dao.ImageDao;
 import com.example.flickr_mvvm_architectural_component.db.entity.ImageEntity;
 
 import androidx.annotation.NonNull;
