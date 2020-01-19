@@ -3,7 +3,7 @@ package com.example.flickr_mvvm_architectural_component.viewmodel;
 import android.app.Application;
 
 import com.example.flickr_mvvm_architectural_component.data.remote.SearchImageRepository;
-import com.example.flickr_mvvm_architectural_component.view.search.SearchViewModel;
+import com.example.flickr_mvvm_architectural_component.viewmodel.search.SearchViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
