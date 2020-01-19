@@ -52,32 +52,57 @@ public class SearchImageRepository implements SearchImageRepositoryInterface {
 		return imagesResource;
 	}
 
-	public void searchImages(String query) {
-		if (databaseSource != null) {
+	public void searchImages(String searchString) {
+		if (databaseSource != null){
 			imagesResource.removeSource(databaseSource);
 		}
 
-		PagedList.Config pagingConfig = new PagedList.Config.Builder()
-			.setPageSize(AppConstants.PAGE_SIZE)
-			.setPrefetchDistance(AppConstants.PREFETXH_DISTANCE)
-			.setEnablePlaceholders(true)
-			.build();
+		databaseSource = searchFlickrImagesInDb(searchString, new SearchBoundaryCallback(searchString, this));
 
-		DataSource.Factory<Integer, ImageEntity> dataSource = database.getImagesDao()
-			.getImages(query);
-		databaseSource = new LivePagedListBuilder<>(dataSource, pagingConfig)
-			.setBoundaryCallback(new SearchBoundaryCallback(query, this)).build();
-		imagesResource.addSource(databaseSource,
-			flickrImageEntities -> imagesResource.setValue(Resource.success(flickrImageEntities)));
+		imagesResource.addSource(databaseSource, imageEntities -> imagesResource.setValue(Resource.success(imageEntities)));
 	}
+
 
 	public void getImagesAtPage(final String searchString, int pageNumber) {
 		imagesResource.removeSource(databaseSource);
-		imagesResource
-			.addSource(databaseSource, data -> imagesResource.setValue(Resource.loading(data)));
+		imagesResource.addSource(databaseSource, newData -> imagesResource.setValue(Resource.loading(newData)));
 
-		getImagesCallBack(searchString, pageNumber);
+		webService.getImages(searchString, pageNumber, new WebService.SearchImageCallback<List<ImageEntity>>() {
+			@Override
+			public void onSuccess(final List<ImageEntity> flickrImageEntities) {
+				if (flickrImageEntities == null) {
+					return;
+				}
+
+				imagesResource.removeSource(databaseSource);
+
+				for (ImageEntity entity : flickrImageEntities) {
+					entity.setSearchTerm(searchString);
+				}
+
+				appExecutors.diskIO().execute(() -> {
+					database.getImagesDao().insertAll(flickrImageEntities);
+
+					appExecutors.mainThread().execute(() -> {
+						imagesResource.addSource(databaseSource, newData -> imagesResource.setValue(Resource.success(newData)));
+					});
+				});
+			}
+
+			@Override
+			public void onFailure(String errorMessage) {
+				imagesResource.removeSource(databaseSource);
+				imagesResource.addSource(databaseSource, newData -> imagesResource.setValue(Resource.error(errorMessage, newData)));
+			}
+		});
 	}
+//	public void getImagesAtPage(final String searchString, int pageNumber) {
+//		imagesResource.removeSource(databaseSource);
+//		imagesResource
+//			.addSource(databaseSource, data -> imagesResource.setValue(Resource.loading(data)));
+//
+//		getImagesCallBack(searchString, pageNumber);
+//	}
 
 	private void getImagesCallBack(String query, int pageNumber) {
 		webService.getImages(query, pageNumber,
@@ -99,8 +124,8 @@ public class SearchImageRepository implements SearchImageRepositoryInterface {
 
 						appExecutors.mainThread().execute(() -> {
 							imagesResource
-								.addSource(databaseSource, newData -> imagesResource.setValue(
-									Resource.success(newData)));
+								.addSource(databaseSource,
+									newData -> imagesResource.setValue(Resource.success(newData)));
 						});
 					});
 
@@ -109,9 +134,22 @@ public class SearchImageRepository implements SearchImageRepositoryInterface {
 				@Override
 				public void onFailure(String errorMessage) {
 					imagesResource.removeSource(databaseSource);
-					imagesResource.addSource(databaseSource, newData -> imagesResource
-						.setValue(Resource.error(errorMessage, newData)));
+					imagesResource.addSource(databaseSource,
+						newData -> imagesResource.setValue(Resource.error(errorMessage, newData)));
 				}
 			});
 	}
+
+	private LiveData<PagedList<ImageEntity>> searchFlickrImagesInDb(String searchString, final PagedList.BoundaryCallback<ImageEntity> boundaryCallback) {
+		PagedList.Config myPagingConfig = new PagedList.Config.Builder()
+			.setPageSize(AppConstants.PAGE_SIZE)
+			.setPrefetchDistance(AppConstants.PREFETXH_DISTANCE)
+			.setEnablePlaceholders(true)
+			.build();
+
+		DataSource.Factory<Integer, ImageEntity> dataSource = database.getImagesDao().getImages(searchString);
+
+		return new LivePagedListBuilder<>(dataSource, myPagingConfig).setBoundaryCallback(boundaryCallback).build();
+	}
+
 }

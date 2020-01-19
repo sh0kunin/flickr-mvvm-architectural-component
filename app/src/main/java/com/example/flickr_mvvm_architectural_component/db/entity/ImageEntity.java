@@ -1,5 +1,7 @@
 package com.example.flickr_mvvm_architectural_component.db.entity;
 
+import java.util.Objects;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -15,7 +17,6 @@ public class ImageEntity {
 	private String searchTerm;
 	private int farm;
 	private int pageNumber;
-	private String imageURL;
 
 	public ImageEntity() {
 
@@ -30,7 +31,6 @@ public class ImageEntity {
 		this.searchTerm = searchTerm;
 		this.farm = farm;
 		this.pageNumber = pageNumber;
-		this.imageURL = imageURL;
 	}
 
 	public int getId() {
@@ -101,7 +101,18 @@ public class ImageEntity {
 		this.pageNumber = pageNumber;
 	}
 
-	public void setImageURL(String imageURL) {
-		this.imageURL = imageURL;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ImageEntity that = (ImageEntity) o;
+		return id == that.id &&
+			Objects.equals(flickrId, that.flickrId);
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, flickrId);
+	}
+
 }

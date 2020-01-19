@@ -2,6 +2,7 @@ package com.example.flickr_mvvm_architectural_component.data.remote;
 
 import java.io.IOException;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -18,10 +19,10 @@ public class SearchImageAsyncTask extends AsyncTask<ImageEntity, Void, Bitmap> {
 
     private static final String TAG = SearchImageAsyncTask.class.getName();
 
-    private SoftReference<ImageView> mImageViewReference;
+    private WeakReference<ImageView> mImageViewReference;
 
     public SearchImageAsyncTask(ImageView imageView) {
-        this.mImageViewReference = new SoftReference<>(imageView);
+        this.mImageViewReference = new WeakReference<>(imageView);
     }
 
     protected Bitmap doInBackground(ImageEntity... searchImages) {

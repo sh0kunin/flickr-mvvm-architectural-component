@@ -23,13 +23,17 @@ public class URLManager {
     }
 
     public static String getImageUrl(final ImageEntity searchImage) {
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme(AppConstants.HTTPS)
-            .authority(AppConstants.FARM + searchImage.getFarm() + AppConstants.METHOD_IMAGE)
-            .appendPath(searchImage.getServer())
-            .appendPath(searchImage.getFlickrId() + AppConstants.UNDERSCORE + searchImage.getSecret() + AppConstants.JPG);
+        if(searchImage!=null) {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme(AppConstants.HTTPS)
+                .authority(AppConstants.FARM + searchImage.getFarm() + AppConstants.METHOD_IMAGE)
+                .appendPath(searchImage.getServer())
+                .appendPath(searchImage.getFlickrId() + AppConstants.UNDERSCORE + searchImage.getSecret() + AppConstants.JPG);
 
-        return builder.build().toString();
+            return builder.build().toString();
+        }
+
+        return "";
     }
 
 }

@@ -28,7 +28,6 @@ public class SearchImagesResponse {
 			entity.setServer(jsonObject.getString("server"));
 			entity.setSecret(jsonObject.getString("secret"));
 			entity.setPageNumber(pageNumber);
-			entity.setImageURL(URLManager.getImageUrl(entity));
 			getImages.add(entity);
 		}
 
