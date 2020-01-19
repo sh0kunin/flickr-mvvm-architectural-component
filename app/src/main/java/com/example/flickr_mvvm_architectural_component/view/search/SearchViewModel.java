@@ -1,4 +1,4 @@
-package com.example.flickr_mvvm_architectural_component.ui.search;
+package com.example.flickr_mvvm_architectural_component.view.search;
 
 import android.app.Application;
 

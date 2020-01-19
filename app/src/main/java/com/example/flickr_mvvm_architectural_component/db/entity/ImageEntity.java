@@ -1,15 +1,13 @@
 package com.example.flickr_mvvm_architectural_component.db.entity;
 
-import java.util.Objects;
-
-import com.example.flickrexample.data.model.SearchImage;
+import android.media.Image;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "searchImageEntity")
-public class SearchImageEntity implements SearchImage {
+@Entity(tableName = "imageEntity")
+public class ImageEntity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -22,11 +20,7 @@ public class SearchImageEntity implements SearchImage {
     private int pageNumber;
     private String imageURL;
 
-    public SearchImageEntity() {
-    }
-
-    @Ignore
-    public SearchImageEntity(String flickrId, String title, String server, String secret, String searchTerm, int farm, int pageNumber) {
+    public ImageEntity(String flickrId, String title, String server, String secret, String searchTerm, int farm, int pageNumber, String imageURL) {
         this.flickrId = flickrId;
         this.title = title;
         this.server = server;
@@ -34,49 +28,41 @@ public class SearchImageEntity implements SearchImage {
         this.searchTerm = searchTerm;
         this.farm = farm;
         this.pageNumber = pageNumber;
+        this.imageURL = imageURL;
     }
 
-    @Override
     public int getId() {
         return id;
     }
 
-    @Override
     public String getFlickrId() {
         return flickrId;
     }
 
-    @Override
     public String getTitle() {
         return this.title;
     }
 
-    @Override
     public int getFarm() {
         return this.farm;
     }
 
-    @Override
     public String getSecret() {
         return this.secret;
     }
 
-    @Override
     public String getServer() {
         return this.server;
     }
 
-    @Override
     public String getSearchTerm() {
         return this.searchTerm;
     }
 
-    @Override
     public int getPageNumber() {
         return this.pageNumber;
     }
 
-    @Override
     public String getImageURL() {
         return null;
     }
@@ -111,20 +97,6 @@ public class SearchImageEntity implements SearchImage {
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SearchImageEntity that = (SearchImageEntity) o;
-        return id == that.id &&
-                Objects.equals(flickrId, that.flickrId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, flickrId);
     }
 
     public void setImageURL(String imageURL) {

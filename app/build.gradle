@@ -24,6 +24,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${rootProject.ext.androidx_appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.androidx_constraintlayout}"
     implementation "androidx.room:room-runtime:${rootProject.ext.androidx_room_version}"
+    implementation "androidx.paging:paging-runtime:${rootProject.ext.androidx_paging_version}"
 
     annotationProcessor "androidx.room:room-compiler:${rootProject.ext.androidx_room_version}"
 
