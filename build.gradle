@@ -20,7 +20,7 @@ buildscript {
     ext.androidx_test_espresso= '3.2.0'
     ext.androidx_test_junit= '1.1.1'
     ext.androidx_core_testing= '2.1.0'
-
+    ext.androidx_lifecycle= '2.0.0'
     ext.test_junit= '4.12'
 }
 
