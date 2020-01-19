@@ -12,10 +12,10 @@ import androidx.room.Query;
 @Dao
 public interface ImageDao {
 
-    @Query("SELECT * FROM ImageEntity WHERE searchTerm = :query")
-    DataSource.Factory<Integer, ImageEntity> getImages(String query);
+	@Query("SELECT * FROM ImageEntity WHERE searchTerm = :query")
+	DataSource.Factory<Integer, ImageEntity> getImages(String query);
 
-    @Insert()
-    void insertAll(List<ImageEntity> images);
+	@Insert()
+	void insertAll(List<ImageEntity> images);
 
 }

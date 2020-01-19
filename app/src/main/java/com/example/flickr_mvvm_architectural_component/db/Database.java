@@ -9,24 +9,25 @@ import androidx.annotation.Nullable;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@androidx.room.Database(entities = { ImageEntity.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = { ImageEntity.class }, version = 1, exportSchema = false)
 public abstract class Database extends RoomDatabase {
 
-    @Nullable
-    private static Database sInstance;
-    private static final String DATABASE_NAME = "image-db";
+	@Nullable
+	private static Database sInstance;
+	private static final String DATABASE_NAME = "image-db";
 
-    public abstract ImageDao getImagesDao();
+	public abstract ImageDao getImagesDao();
 
-    public static Database getInstance(final Context context) {
-        if (sInstance == null) {
-            synchronized (Database.class) {
-                if (sInstance == null) {
-                    sInstance = Room.databaseBuilder(context, Database.class, DATABASE_NAME).build();
-                }
-            }
-        }
-        return sInstance;
-    }
+	public static Database getInstance(final Context context) {
+		if (sInstance == null) {
+			synchronized (Database.class) {
+				if (sInstance == null) {
+					sInstance = Room.databaseBuilder(context, Database.class, DATABASE_NAME)
+						.build();
+				}
+			}
+		}
+		return sInstance;
+	}
 
 }
