@@ -3,6 +3,7 @@
     package="com.example.flickr_mvvm_architectural_component">
 
     <application
+        android:name=".FlickrSearchImageApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
