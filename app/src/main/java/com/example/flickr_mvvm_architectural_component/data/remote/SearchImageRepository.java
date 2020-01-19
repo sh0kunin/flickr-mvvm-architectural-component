@@ -35,7 +35,7 @@ public class SearchImageRepository implements SearchImageRepositoryInterface {
 		this.imagesResource = new MediatorLiveData<>();
 	}
 
-	public static SearchImageRepository getInstance(int pageSize, final Database database,
+	public static SearchImageRepository getInstance(final Database database,
 		AppExecutors appExecutors, WebService webService) {
 		if (sInstance == null) {
 			synchronized (SearchImageRepository.class) {
