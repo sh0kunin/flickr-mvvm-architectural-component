@@ -17,5 +17,7 @@ public class AppConstants {
 	public static final String UNDERSCORE = "_";
 	public static final String NOJSONCALLBACK_VALUE = "1";
 	public static final int REQUEST_TIMEOUT = 5000;
+	public static final int PAGE_SIZE = 10;
+	public static final int PREFETXH_DISTANCE = 15;
 
 }

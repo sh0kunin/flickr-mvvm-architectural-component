@@ -6,6 +6,7 @@ import com.example.flickr_mvvm_architectural_component.data.SearchImageRepositor
 import com.example.flickr_mvvm_architectural_component.data.model.Resource;
 import com.example.flickr_mvvm_architectural_component.db.Database;
 import com.example.flickr_mvvm_architectural_component.db.entity.ImageEntity;
+import com.example.flickr_mvvm_architectural_component.utils.AppConstants;
 import com.example.flickr_mvvm_architectural_component.utils.AppExecutors;
 
 import androidx.annotation.Nullable;
@@ -57,8 +58,8 @@ public class SearchImageRepository implements SearchImageRepositoryInterface {
 		}
 
 		PagedList.Config pagingConfig = new PagedList.Config.Builder()
-			.setPageSize(100)
-			.setPrefetchDistance(150)
+			.setPageSize(AppConstants.PAGE_SIZE)
+			.setPrefetchDistance(AppConstants.PREFETXH_DISTANCE)
 			.setEnablePlaceholders(true)
 			.build();
 

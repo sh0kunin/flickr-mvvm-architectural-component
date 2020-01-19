@@ -24,14 +24,14 @@ public class WebService {
 	}
 
 	public void getImages(String searchString, int pageNumber,
-		final SearchImageCallaback<List<ImageEntity>> callback) {
+		final SearchImageCallback<List<ImageEntity>> callback) {
 		execute(URLManager.getSearchImagesURL(searchString, pageNumber),
 			getImagesCallback(callback));
 	}
 
-	private SearchImageCallaback<JSONObject> getImagesCallback(
-		final SearchImageCallaback<List<ImageEntity>> callback) {
-		return new SearchImageCallaback<JSONObject>() {
+	private SearchImageCallback<JSONObject> getImagesCallback(
+		final SearchImageCallback<List<ImageEntity>> callback) {
+		return new SearchImageCallback<JSONObject>() {
 			@Override
 			public void onSuccess(final JSONObject response) {
 				SearchImagesResponse searchImagesResponse = new SearchImagesResponse();
@@ -50,7 +50,7 @@ public class WebService {
 		};
 	}
 
-	private void execute(String requestPath, final SearchImageCallaback<JSONObject> callback) {
+	private void execute(String requestPath, final SearchImageCallback<JSONObject> callback) {
 		mAppExecutors.networkIO().execute(() -> {
 			try {
 				JSONObject response = getJsonSearchResponse(requestPath);
@@ -82,13 +82,13 @@ public class WebService {
 		return new JSONObject(sb.toString());
 	}
 
-	private void handleError(final SearchImageCallaback callback) {
+	private void handleError(final SearchImageCallback callback) {
 		mAppExecutors.mainThread().execute(() -> {
 			callback.onFailure("Something went wrong, cant handle request");
 		});
 	}
 
-	public interface SearchImageCallaback<T> {
+	public interface SearchImageCallback<T> {
 		void onSuccess(T response);
 
 		void onFailure(String errorMessage);

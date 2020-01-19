@@ -17,6 +17,10 @@ public class ImageEntity {
 	private int pageNumber;
 	private String imageURL;
 
+	public ImageEntity() {
+
+	}
+
 	public ImageEntity(String flickrId, String title, String server, String secret,
 		String searchTerm, int farm, int pageNumber, String imageURL) {
 		this.flickrId = flickrId;
