@@ -20,6 +20,14 @@ android {
             testCoverageEnabled = true
         }
     }
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 configurations.all {
     resolutionStrategy.eachDependency { details ->
@@ -54,6 +62,10 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:${rootProject.ext.androidx_room_version}"
 
     testImplementation "junit:junit:${rootProject.ext.test_junit}"
+    testImplementation "androidx.arch.core:core-testing:${rootProject.ext.androidx_core_testing}"
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.json:json:20190722'
+
     androidTestImplementation "androidx.arch.core:core-testing:${rootProject.ext.androidx_core_testing}"
     androidTestImplementation "androidx.test.ext:junit:${rootProject.ext.androidx_test_junit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.androidx_test_espresso}"
