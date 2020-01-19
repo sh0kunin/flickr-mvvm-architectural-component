@@ -16,5 +16,6 @@ public class AppConstants {
 	public static final String JPG = ".jpg";
 	public static final String UNDERSCORE = "_";
 	public static final String NOJSONCALLBACK_VALUE = "1";
+	public static final int REQUEST_TIMEOUT = 5000;
 
 }

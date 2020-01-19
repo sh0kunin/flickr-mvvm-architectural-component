@@ -1,13 +1,14 @@
 package com.example.flickr_mvvm_architectural_component.utils;
 
+
+
 import android.net.Uri;
 
 import com.example.flickr_mvvm_architectural_component.BuildConfig;
 import com.example.flickr_mvvm_architectural_component.db.entity.ImageEntity;
 
-
 public class URLManager {
-    
+
     public static String getSearchImagesURL(String searchString, int pageNumber) {
         String url = Uri.parse(AppConstants.ENDPOINT_SEARCH).buildUpon()
             .appendQueryParameter(AppConstants.METHOD, AppConstants.METHOD_SEARCH)
