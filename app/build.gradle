@@ -71,6 +71,8 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:${rootProject.ext.androidx_core_testing}"
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation 'org.json:json:20190722'
+    testImplementation 'org.mockito:mockito-core:2.25.0'
+    testImplementation "androidx.paging:paging-common:${rootProject.ext.androidx_paging_version}"
 
     androidTestImplementation "androidx.arch.core:core-testing:${rootProject.ext.androidx_core_testing}"
     androidTestImplementation "androidx.test.ext:junit:${rootProject.ext.androidx_test_junit}"

@@ -1,71 +1,130 @@
 package com.example.flickr_mvvm_architectural_component.viewmodel.search;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import android.app.Application;
 
-import com.example.flickr_mvvm_architectural_component.data.SearchImageRepositoryInterface;
+import com.example.flickr_mvvm_architectural_component.FlickrSearchImageApplication;
+import com.example.flickr_mvvm_architectural_component.data.model.Resource;
 import com.example.flickr_mvvm_architectural_component.data.remote.SearchImageRepository;
 import com.example.flickr_mvvm_architectural_component.db.entity.ImageEntity;
 
-import androidx.lifecycle.AndroidViewModel;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PagedList;
 
-import static com.example.flickr_mvvm_architectural_component.data.model.LoadingStatus.LOADING;
-import static com.example.flickr_mvvm_architectural_component.data.model.LoadingStatus.SUCCESS;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
+public class SearchViewModelTest {
+
+    @Rule
+    public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
+
+    private Application mockApplication;
+    private MutableLiveData<Resource<PagedList<ImageEntity>>> imageResources;
 
 
-public class SearchViewModel extends AndroidViewModel {
+    @Mock
+    private PagedList<ImageEntity> mockPagedList;
 
-    private final SearchImageRepositoryInterface searchImageRepository;
-    private final MediatorLiveData<PagedList<ImageEntity>> imagesListLiveData;
-    private final MutableLiveData<Boolean> successLiveData;
-    private final MutableLiveData<Boolean> loadingLiveData;
-    private final MutableLiveData<Boolean> errorLiveData;
-    private final MutableLiveData<String> queryLiveData;
+    @Mock
+    private SearchImageRepository mockRepository;
 
-    public SearchViewModel(Application application, SearchImageRepository repository) {
-        super(application);
+    private SearchViewModel viewModel;
 
-        this.searchImageRepository = repository;
-        errorLiveData = new MutableLiveData<>();
-        queryLiveData = new MutableLiveData<>();
-        loadingLiveData = new MutableLiveData<>();
-        successLiveData = new MutableLiveData<>();
-        loadingLiveData.setValue(null);
+    @Before
+    public void setup() {
 
-        imagesListLiveData = new MediatorLiveData<>();
-        imagesListLiveData.addSource(searchImageRepository.getImages(), (resource) -> {
-            imagesListLiveData.setValue(resource.getData());
-            errorLiveData.setValue(resource.getErrorMessage() != null);
-            loadingLiveData.setValue((resource.getLoadingStatus() == LOADING));
-            successLiveData.setValue((resource.getLoadingStatus() == SUCCESS));
-        });
+        mockApplication = new FlickrSearchImageApplication();
+        mockRepository = mock(SearchImageRepository.class);
+        viewModel = new SearchViewModel(mockApplication, mockRepository);
+        imageResources = new MutableLiveData<>();
+
+        when(mockRepository.getImages()).thenReturn(imageResources);
     }
 
-    public LiveData<PagedList<ImageEntity>> getImages() {
-        return imagesListLiveData;
+    @Test
+    public void testViewModelInstancesAreNotNull() {
+        assertThat(viewModel.getImages(), CoreMatchers.notNullValue());
+        assertThat(viewModel.hasError(), CoreMatchers.notNullValue());
+        assertThat(viewModel.isLoading(), CoreMatchers.notNullValue());
+        assertThat(viewModel.isSuccess(), CoreMatchers.notNullValue());
+
+        LiveData<PagedList<ImageEntity>> images = viewModel.getImages();
+        assertNotNull(images);
     }
 
-    public LiveData<Boolean> isSuccess() {
-        return successLiveData;
+    @Test
+    public void testGetImagesIsNull() {
+        SearchViewModel viewModel = new SearchViewModel(mockApplication, mockRepository);
+        LiveData<PagedList<ImageEntity>> images = viewModel.getImages();
+        images.observeForever(image -> { });
+
+        assertNull(images.getValue());
     }
 
-    public LiveData<Boolean> hasError() {
-        return errorLiveData;
+    @Test
+    public void testSearchImagesExecutesOnRepository() {
+        viewModel.setQuery("title");
+        viewModel.searchImages();
+        Mockito.verify(mockRepository, times(1)).searchImages("title" );
     }
 
-    public LiveData<Boolean> isLoading() {
-        return loadingLiveData;
+    @Test
+    public void testHasError() {
+        SearchViewModel viewModel = new SearchViewModel(mockApplication, mockRepository);
+        viewModel.getImages().observeForever(image -> { });
+        imageResources.setValue(Resource.error("Something went wrong", null));
+        LiveData<Boolean> hasError = viewModel.hasError();
+
+        assertTrue(hasError.getValue());
     }
 
-    public void setQuery(String query) {
-        queryLiveData.setValue(query);
+    @Test
+    public void testIsSuccess() {
+        SearchViewModel viewModel = new SearchViewModel(mockApplication, mockRepository);
+        viewModel.getImages().observeForever(image -> { });
+        imageResources.setValue(Resource.success(mockPagedList));
+        LiveData<Boolean> isSuccess = viewModel.isSuccess();
+
+        assertTrue(isSuccess.getValue());
     }
 
-    public void searchImages() {
-        searchImageRepository.searchImages(queryLiveData.getValue());
+    @Test
+    public void testIsLoadingIsFalse() {
+        SearchViewModel viewModel = new SearchViewModel(mockApplication, mockRepository);
+        LiveData<Boolean> isLoading = viewModel.isLoading();
+        isLoading.observeForever(image -> { });
+
+        assertNull(isLoading.getValue());
     }
+
+    @Test
+    public void testSetLoading() {
+        SearchViewModel viewModel = new SearchViewModel(mockApplication, mockRepository);
+        viewModel.getImages().observeForever(image -> { });
+        imageResources.setValue(Resource.loading(null));
+        LiveData<Boolean> isLoading = viewModel.isLoading();
+        isLoading.observeForever(image -> { });
+
+        assertTrue(isLoading.getValue());
+    }
+
 
 }
