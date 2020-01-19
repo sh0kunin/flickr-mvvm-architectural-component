@@ -1,4 +1,9 @@
-package com.example.flickrexample.data.remote;
+package com.example.flickr_mvvm_architectural_component.data.remote;
+
+import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,29 +11,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.example.flickrexample.db.entity.ImageEntity;
-import com.example.flickrexample.utils.URLManager;
+import com.example.flickr_mvvm_architectural_component.db.entity.ImageEntity;
+import com.example.flickr_mvvm_architectural_component.utils.URLManager;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-/**
- * This AsyncTask is responsible for downloading an image from a URL and displaying it in a ImageView.
- *
- * Normally I would use a library like Glide or Picasso to achieve this as it handles a lot of the
- * corner cases as well as providing caching, etc.
- */
 public class SearchImageAsyncTask extends AsyncTask<ImageEntity, Void, Bitmap> {
 
     private static final String TAG = SearchImageAsyncTask.class.getName();
 
-    // Need to be careful about causing a memory leak - hold a weak reference which can be destroyed
-    private WeakReference<ImageView> mImageViewReference;
+    private SoftReference<ImageView> mImageViewReference;
 
     public SearchImageAsyncTask(ImageView imageView) {
-        this.mImageViewReference = new WeakReference<>(imageView);
+        this.mImageViewReference = new SoftReference<>(imageView);
     }
 
     protected Bitmap doInBackground(ImageEntity... searchImages) {
@@ -39,6 +32,7 @@ public class SearchImageAsyncTask extends AsyncTask<ImageEntity, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         if (result == null) {
+            Log.e(TAG, "Bitmap error!");
             return;
         }
 
