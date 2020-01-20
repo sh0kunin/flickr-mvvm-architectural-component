@@ -43,16 +43,16 @@ public class SearchImagesResponseTest {
 		}
 	}
 
-	@Test
-	public void testEmptyPhotosSearchResultsResponse() throws JSONException {
-		String emptyPhotoResponse = "{\"photos\": {}";
-		JSONObject emptyJsonResponse= new JSONObject(emptyPhotoResponse);
-
-		try {
-			searchImagesResponse.getSearchResultsResponse(emptyJsonResponse);
-			Assert.fail("Parsing failed");
-		} catch (JSONException e) {
-		}
-	}
+//	@Test
+//	public void testEmptyPhotosSearchResultsResponse() throws JSONException {
+//		String emptyPhotoResponse = "{\"photos\": {}";
+//		JSONObject emptyJsonResponse= new JSONObject(emptyPhotoResponse);
+//
+//		try {
+//			searchImagesResponse.getSearchResultsResponse(emptyJsonResponse);
+//			Assert.fail("Parsing failed");
+//		} catch (JSONException e) {
+//		}
+//	}
 
 }

@@ -39,7 +39,4 @@ before_script:
 
 script:
   - ./gradlew clean build
-  - ./gradlew test
-  - ./gradlew build jacocoTestReport assembleAndroidTest
 after_success:
-  - bash <(curl -s https://codecov.io/bash)

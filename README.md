@@ -91,6 +91,8 @@ Once the network call is fired to get images, those are first inserted in the da
     - Testing made easy with dependencies mocked.
     - Minimum test coverage currently, just to show testing of different services.
 
+# DevOps
+    - Build 
 # Special Mention :
     - Live Data
         - Ensuring no memory leaks and crashes due to activity lifecycle.
@@ -116,3 +118,5 @@ Once the network call is fired to get images, those are first inserted in the da
 # Testing Improvements : 
     - Improve code coverage for unit tests, current coverage is time boxed, just a demo to show unit testing possibilities.
     - Add end-to-end espresso tests.
+    
+    
