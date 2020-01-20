@@ -23,10 +23,29 @@ The app also follows the principles from clean architecture, without separating 
 4. ViewModel will help us provide data between repository and UI.
 5. RecyclerView displays the 3-layered grid view.
 
+# General Android design considerations :
+1. Memory : 
+    - Executors and Async Tasks will ensure background thread to downlaod images.
+    - Database reads are on background thread.
+    - Using LiveData and ensuring viewmodel doesn't leak memory.
+    
+2. Battery : 
+    - Network calls are controlled and catered too.
+3. Bandwith : 
+    - The app is light weight, but basic design ensured, network calls are made only in the app and cancel and potential tasks/
+4. Resilience : 
+    - Offline support and caching is not yet provided.
+5. Persistence : 
+    - Have used RoomDB, which persists the previous searches.
+6. Scalability : 
+    - Since no 3rd party library is used, neither the google play services, the app can scale to different play stores(including china, with most restrictions)
+ 
+# High-Level Design :
 
-
-# High-Level Design : 
+Once the network call is fired to get images, those are first inserted in the database(using room) and then LiveData provided them to the views.
+ 
 1. Model
+    - ImageEntity - Single source of truth.
 2. View 
     - Search
         - SearchActivity 
@@ -43,12 +62,11 @@ The app also follows the principles from clean architecture, without separating 
         
 5. Room
     - ImageEntity
-     - Representation of Image table. 
+        - Representation of Image table. 
     - ImageDAO 
-     - Interface to get SQL queries for images and inserting images.
+        - Interface to get SQL queries for images and inserting images.
     - Database
-         
-1. Once the network call is fired to get images, those are first inserted in the database(using room) and then LiveData provided them to the views. 
+ 
 
 # Low-Level Design : 
 1. WebServices
@@ -80,7 +98,7 @@ The app also follows the principles from clean architecture, without separating 
  
 # Architectural Improvements : 
     - Follow clean architecture - Seperate out different modules. 
-    - Possible replacement of LiveData in Repository with Rx.
+    - Possible replacement of LiveData in Repository with Rx(https://proandroiddev.com/the-real-repository-pattern-in-android-efba8662b754)
  
 # Feature Improvements :
     - Cross icon in search box.
