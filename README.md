@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/sh0kunin/flickr-mvvm-architectural-component.svg?branch=master)](https://travis-ci.org/sh0kunin/flickr-mvvm-architectural-component)
+[![codecov.io](https://codecov.io/gh/sh0kunin/flickr-mvvm-architectural-component/branch/master/graph/badge.svg)](https://codecov.io/gh/sh0kunin/flickr-mvvm-architectural-component)
+
+
 # flickr-mvvm-architectural-component
 Flickr android app using android architectural components and follows mvvm.
 The app supports the basic feature of searching for images and displaying on the view which supports endless scrolling, where prefetch request is made with 3/4 the elements scrolled.
