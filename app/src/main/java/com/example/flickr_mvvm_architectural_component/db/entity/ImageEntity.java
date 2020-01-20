@@ -107,12 +107,16 @@ public class ImageEntity {
 		if (o == null || getClass() != o.getClass()) return false;
 		ImageEntity that = (ImageEntity) o;
 		return id == that.id &&
-			Objects.equals(flickrId, that.flickrId);
+			flickrId == that.flickrId;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, flickrId);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+			+ ((flickrId == null) ? 0 : flickrId.hashCode());
+		return result;
 	}
 
 }
