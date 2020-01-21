@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/sh0kunin/flickr-mvvm-architectural-component.svg?branch=master)](https://travis-ci.org/sh0kunin/flickr-mvvm-architectural-component)
-[![codecov.io](https://codecov.io/gh/sh0kunin/flickr-mvvm-architectural-component/branch/master/graph/badge.svg)](https://codecov.io/gh/sh0kunin/flickr-mvvm-architectural-component)
 
 
 # flickr-mvvm-architectural-component
@@ -90,7 +89,8 @@ Once the network call is fired to get images, those are first inserted in the da
 # Unit Tests : 
     - Testing made easy with dependencies mocked.
     - Minimum test coverage currently, just to show testing of different services.
-
+    - Coverage 40%
+    
 # DevOps
     - Build 
 # Special Mention :
