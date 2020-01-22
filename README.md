@@ -5,6 +5,8 @@
 Flickr android app using android architectural components and follows mvvm.
 The app supports the basic feature of searching for images and displaying on the view which supports endless scrolling, where prefetch request is made with 3/4 the elements scrolled.
 
+![App screenshot](https://github.com/sh0kunin/flickr-mvvm-architectural-component/blob/master/architecture/app_screenshot.jpg)
+
 
 ## Architecture : 
 This app is an example to demonstrate MVVM architecture, while making use of LiveData, Room and Paging android architectural components.
