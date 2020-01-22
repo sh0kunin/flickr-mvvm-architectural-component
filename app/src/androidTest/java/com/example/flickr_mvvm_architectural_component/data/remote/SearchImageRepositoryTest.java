@@ -66,34 +66,6 @@ public class SearchImageRepositoryTest {
         assertNotNull(repository);
     }
 
-
-//    @Test
-//    public void testSearchImageResourceStatusSuccess() {
-//        SearchImageRepository repository = new SearchImageRepository(database, mAppExecutors, mWebservice);
-//        LiveData<Resource<PagedList<ImageEntity>>> entities = repository.getImages();
-//        entities.observeForever(mObserver);
-//        repository.searchImages("title");
-//
-//        Resource<PagedList<ImageEntity>> resource = entities.getValue();
-//
-//        assertNotNull(resource);
-//        assertEquals(LoadingStatus.SUCCESS, resource.getLoadingStatus());
-//    }
-
-//    @Test
-//    public void testSearchImageResourceStatusLoadingForNextPage() {
-//        SearchImageRepository repository = new SearchImageRepository(database, mAppExecutors, mWebservice);
-//        LiveData<Resource<PagedList<ImageEntity>>> entities = repository.getImages();
-//        entities.observeForever(mObserver);
-//        repository.searchImages("title");
-//
-//        repository.getImagesAtPage("title", 2);
-//
-//        Resource<PagedList<ImageEntity>> resource = entities.getValue();
-//        assertNotNull(resource);
-//        assertEquals(LoadingStatus.LOADING, resource.getLoadingStatus());
-//    }
-
     @Test
     public void testSearchImageResourceStatusErrorOnFailure() {
         SearchImageRepository repository = new SearchImageRepository(database, mAppExecutors, new MockFailService());

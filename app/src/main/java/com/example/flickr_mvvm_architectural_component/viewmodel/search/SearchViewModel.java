@@ -41,7 +41,7 @@ public class SearchViewModel extends AndroidViewModel {
             imagesListLiveData.setValue(resource.getData());
             errorLiveData.setValue(resource.getErrorMessage() != null);
             loadingLiveData.setValue((resource.getLoadingStatus() == LOADING));
-            successLiveData.setValue((resource.getLoadingStatus() == SUCCESS));
+            loadingLiveData.setValue((resource.getLoadingStatus() == SUCCESS));
         });
     }
 

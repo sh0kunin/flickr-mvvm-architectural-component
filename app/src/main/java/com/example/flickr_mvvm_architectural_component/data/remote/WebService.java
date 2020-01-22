@@ -23,10 +23,33 @@ public class WebService {
 		mAppExecutors = appExecutors;
 	}
 
-	public void getImages(String searchString, int pageNumber,
-		final SearchImageCallback<List<ImageEntity>> callback) {
-		execute(URLManager.getSearchImagesURL(searchString, pageNumber),
-			getImagesCallback(callback));
+	public void getImages(String searchString, int pageNumber, final SearchImageCallback<List<ImageEntity>> callback) {
+		execute(
+			URLManager.getSearchImagesURL(searchString, pageNumber),
+			new SearchImageCallback<JSONObject>() {
+				@Override
+				public void onSuccess(final JSONObject response) {
+					SearchImagesResponse searchImagesResponse = new SearchImagesResponse();
+					try {
+
+						List<ImageEntity> searchResultsResponse = searchImagesResponse
+							.getSearchResultsResponse(response);
+						if(searchResultsResponse.size() == 0)
+							callback.onFailure("Something went wrong, cant get search images response.");
+						else
+							callback.onSuccess(searchResultsResponse);
+					}
+					catch (JSONException e) {
+						callback.onFailure("Something went wrong, cant get search images response.");
+					}
+				}
+
+				@Override
+				public void onFailure(String errorMessage) {
+					callback.onFailure(errorMessage);
+				}
+			}
+		);
 	}
 
 	private SearchImageCallback<JSONObject> getImagesCallback(
