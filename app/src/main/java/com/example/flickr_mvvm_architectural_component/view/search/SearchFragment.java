@@ -1,5 +1,6 @@
 package com.example.flickr_mvvm_architectural_component.view.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spannable;
@@ -10,10 +11,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.flickr_mvvm_architectural_component.FlickrSearchImageApplication;
 import com.example.flickr_mvvm_architectural_component.R;
 import com.example.flickr_mvvm_architectural_component.databinding.SearchFragmentBinding;
+import com.example.flickr_mvvm_architectural_component.utils.Utils;
 import com.example.flickr_mvvm_architectural_component.view.adapter.SearchImageAdapter;
 import com.example.flickr_mvvm_architectural_component.view.common.SpacesItemDecoration;
 import com.example.flickr_mvvm_architectural_component.viewmodel.search.SearchViewModel;
@@ -68,10 +72,9 @@ public class SearchFragment extends Fragment {
         mainFragmentBinding.searchButton.setOnClickListener(v -> {
             if (editable != null || editable.toString().length() > 0) {
                 search(mViewModel, editable);
-                Spannable styledText = getStyledText(
-                    getString(R.string.results_string) + " " + editable.toString().toLowerCase(),
-                    editable.toString().toLowerCase());
-                mainFragmentBinding.title.setText(styledText);
+                String query = editable.toString().toLowerCase();
+                mainFragmentBinding.query.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getView().getWindowToken(), 0);;
             }
         });
 
@@ -87,23 +90,4 @@ public class SearchFragment extends Fragment {
         mViewModel.setQuery(editable.toString().toLowerCase());
         mViewModel.searchImages();
     }
-
-    private Spannable getStyledText(String finalString, String query) {
-        Spannable spannable = new SpannableString(finalString);
-
-        int color = getResources().getColor(android.R.color.holo_blue_dark);
-
-        int end = finalString.indexOf(query) + query.length();
-        spannable.setSpan(new ForegroundColorSpan(color),
-            finalString.indexOf(query),
-            end,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannable.setSpan(new RelativeSizeSpan(1.2f),
-            finalString.indexOf(query),
-            end,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spannable;
-    }
-
-
 }

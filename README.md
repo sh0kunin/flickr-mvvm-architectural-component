@@ -44,43 +44,41 @@ The app also follows the principles from clean architecture, without separating 
     - Since no 3rd party library is used, neither the google play services, the app can scale to different play stores(including china, with most restrictions)
  
 # High-Level Design :
+Component based development : 
 
 Once the network call is fired to get images, those are first inserted in the database(using room) and then LiveData provided them to the views.
- 
-1. Model
+
+1. Network component.
+    -  AsyncTask to download the images.
+    -  WebService to get the images from the search query.
+2. Storage Component.
+        - ImageEntity
+            - Representation of Image table. 
+        - ImageDAO 
+            - Interface to get SQL queries for images and inserting images.
+        - Database
+            RoomDb as a database. 
+3. UI Controller.
     - ImageEntity - Single source of truth.
-2. View 
     - Search
         - SearchActivity 
         - SearchFragment
             -  RecyclerView - 3 layer grid setup, with SpaceDecorator.
             - Square Image layout 
-3. View Model
     - Search
-        - SearchViewModel
-4. Repository
-    - Local [Room]  
-    - Remote [Manual HTTP, Async Task]
-        - Network
-        
-5. Room
-    - ImageEntity
-        - Representation of Image table. 
-    - ImageDAO 
-        - Interface to get SQL queries for images and inserting images.
-    - Database
+        - SearchViewModel(Using view model factory)
  
 
 # Low-Level Design : 
 1. WebServices
-    - This class is responsible for making the network calls
+    - This class is responsible for making the network calls.
 2. SearchImageRepository
     - Local data source: Room
     - Remote: WebService, makes the network call and gets the images.
     - Making use of LiveData here to do the following :
         - One way communication with the ViewModel, ensuring clean architecture.
         - A single source of truth for data and network statuses(success, loading or error). 
-3. Endless scrolling: Using SearchBoundaryCallback, once the prefetch distance is reached(3/4 the elements are scrolled), it asks repository to get more data, which in turn makes a network call to get more data. Keeping the SOLID intact.
+3. SearchBoundaryCallback : Endless scrolling, once the prefetch distance is reached(3/4 the elements are scrolled), it asks repository to get more data, which in turn makes a network call to get more data. Keeping the SOLID intact.
 4. ViewModel 
     - ViewModel factory pattern is used to deliver the ViewModel, so the creation is unknown to the caller. Reserving SOLID.
     - As the user types the query and hit the search button, ViewModel ensures to search the images.
@@ -88,11 +86,13 @@ Once the network call is fired to get images, those are first inserted in the da
 
 # Unit Tests : 
     - Testing made easy with dependencies mocked.
-    - Minimum test coverage currently, just to show testing of different services.
+    - Minimum test coverage currently, just to show testing of different layers.
     - Coverage 40%
     
 # DevOps
     - Build 
+    - Travis & Codecov Integration.
+    
 # Special Mention :
     - Live Data
         - Ensuring no memory leaks and crashes due to activity lifecycle.

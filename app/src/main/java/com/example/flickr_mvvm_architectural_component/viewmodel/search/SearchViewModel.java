@@ -42,6 +42,8 @@ public class SearchViewModel extends AndroidViewModel {
             errorLiveData.setValue(resource.getErrorMessage() != null);
             loadingLiveData.setValue((resource.getLoadingStatus() == LOADING));
             loadingLiveData.setValue((resource.getLoadingStatus() == SUCCESS));
+            loadingLiveData.setValue(resource.getLoadingStatus() == LOADING);
+            successLiveData.setValue(resource.getLoadingStatus() == SUCCESS);
         });
     }
 
@@ -53,7 +55,7 @@ public class SearchViewModel extends AndroidViewModel {
         return successLiveData;
     }
 
-    public LiveData<Boolean> hasError() {
+    public LiveData<Boolean> error() {
         return errorLiveData;
     }
 

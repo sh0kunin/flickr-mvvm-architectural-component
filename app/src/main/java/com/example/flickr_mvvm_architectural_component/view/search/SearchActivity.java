@@ -6,6 +6,9 @@ import com.example.flickr_mvvm_architectural_component.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+  Search activity just a holder for fragment.
+ */
 public class SearchActivity extends AppCompatActivity {
 
     @Override
@@ -15,10 +18,10 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.search_activity);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.layout_container, SearchFragment.newInstance())
-                    .commitNow();
+            getSupportFragmentManager().beginTransaction().replace(
+                R.id.layout_container,
+                SearchFragment.newInstance()
+            ).commitNow();
         }
     }
 }

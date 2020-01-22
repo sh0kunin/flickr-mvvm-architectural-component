@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">flickr-mvvm-architectural-component</string>
     <string name="results_string">Showing results for </string>
-    <string name="error_message">No results found</string>
+    <string name="error_message">No results found. </string>
 </resources>

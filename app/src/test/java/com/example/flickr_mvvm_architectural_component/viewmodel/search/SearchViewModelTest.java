@@ -62,7 +62,7 @@ public class SearchViewModelTest {
     @Test
     public void testViewModelInstancesAreNotNull() {
         assertThat(viewModel.getImages(), CoreMatchers.notNullValue());
-        assertThat(viewModel.hasError(), CoreMatchers.notNullValue());
+        assertThat(viewModel.error(), CoreMatchers.notNullValue());
         assertThat(viewModel.isLoading(), CoreMatchers.notNullValue());
         assertThat(viewModel.isSuccess(), CoreMatchers.notNullValue());
 
@@ -91,7 +91,7 @@ public class SearchViewModelTest {
         SearchViewModel viewModel = new SearchViewModel(mockApplication, mockRepository);
         viewModel.getImages().observeForever(image -> { });
         imageResources.setValue(Resource.error("Something went wrong", null));
-        LiveData<Boolean> hasError = viewModel.hasError();
+        LiveData<Boolean> hasError = viewModel.error();
 
         assertTrue(hasError.getValue());
     }
